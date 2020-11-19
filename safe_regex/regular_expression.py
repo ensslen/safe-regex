@@ -2,6 +2,7 @@ import pydantic
 import os
 import yaml
 import re
+from string import Template
 
 
 @pydantic.dataclasses.dataclass()
@@ -34,11 +35,14 @@ class RegularExpression:
         extra = "forbid"
 
     def test(self):
-        msg = "{} {}  not match " + self.pattern + " " + self.get_regexr_debug_link()
+        msg = Template(f"$text $verb not match {self.pattern} {self.get_regexr_debug_link()}")
         for text in self.matching_texts:
-            assert isinstance(self.match(text), re.Match), msg.format(text, "does")
+            assert (
+                isinstance(self.match(text), re.Match),
+                msg.safe_substitute(text=text, verb="does"),
+            )
         for text in self.non_matching_texts:
-            assert self.match(text) is None, msg.format(text, "should")
+            assert self.match(text) is None, msg.safe_substitute(text=text, verb="should")
 
     def get_regexr_debug_link(self) -> str:
         import urllib.parse
@@ -46,7 +50,7 @@ class RegularExpression:
         tests = "These should all match\n{}\nNone of these should match\n{}".format(
             "\n".join(sorted(self.matching_texts)), "\n".join(sorted(self.non_matching_texts))
         )
-        params = {"expression": self.pattern, "text": tests}
+        params = {"expression": f"/{self.pattern}/gms", "text": tests}
         encoded_params = urllib.parse.urlencode(params)
         return f"https://regexr.com/?{encoded_params}"
 

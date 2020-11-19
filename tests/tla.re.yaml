@@ -1,0 +1,9 @@
+---
+pattern: "^[a-z]{3}$"
+matching_texts:
+  - abc
+  - xyz
+non_matching_texts:
+  - 123
+  - r2d2
+  - abcd

@@ -1,8 +1,9 @@
-from safe_regex.dataclasses import RegularExpression
+from safe_regex import RegularExpression
 import pytest
 import pydantic
 import yaml
 import re
+import os
 
 
 def test_dataclass():
@@ -21,16 +22,19 @@ def test_from_yaml(example):
 
 
 def test_testing():
-    with open("./tests/yyyy-mm-dd.re.yaml") as yaml_file:
-        yaml_data = yaml.safe_load(yaml_file)
-    sr = RegularExpression(**yaml_data)
-    sr.test()
+    regex_directory = "./tests"
+    for filename in os.listdir(regex_directory):
+        if filename.endswith(".re.yaml"):
+            with open(os.path.join(regex_directory, filename)) as yaml_file:
+                yaml_data = yaml.safe_load(yaml_file)
+            sr = RegularExpression(**yaml_data)
+            sr.test()
 
 
 def test_regexr_link(example):
     assert (
         example.get_regexr_debug_link()
-        == "https://regexr.com/?expression=%5Cd%7B4%7D-%5Cd%7B2%7D-%5Cd%7B2%7D&text=These+should+all+match%0A1999-12-31%0A2020-01-01%0ANone+of+these+should+match%0A42%0Aclaritycloudworks.com"
+        == "https://regexr.com/?expression=%2F%5Cd%7B4%7D-%5Cd%7B2%7D-%5Cd%7B2%7D%2Fgms&text=These+should+all+match%0A1999-12-31%0A2020-01-01%0ANone+of+these+should+match%0A42%0Aclaritycloudworks.com"
     )
 
 

@@ -1,0 +1,8 @@
+---
+pattern: '\d{4}-\d{2}-\d{2}'
+matching_texts:
+  - "2020-01-01"
+  - "1999-12-31"
+non_matching_texts:
+  - claritycloudworks.com
+  - "42"

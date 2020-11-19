@@ -34,10 +34,21 @@ class RegularExpression:
         extra = "forbid"
 
     def test(self):
+        msg = "{} {}  not match " + self.pattern + " " + self.get_regexr_debug_link()
         for text in self.matching_texts:
-            assert isinstance(self.match(text), re.Match), f"{text} does not match {self.regex}"
+            assert isinstance(self.match(text), re.Match), msg.format(text, "does")
         for text in self.non_matching_texts:
-            assert self.match(text) is None, f"{text} should not match {self.regex}"
+            assert self.match(text) is None, msg.format(text, "should")
+
+    def get_regexr_debug_link(self) -> str:
+        import urllib.parse
+
+        tests = "These should all match\n{}\nNone of these should match\n{}".format(
+            "\n".join(sorted(self.matching_texts)), "\n".join(sorted(self.non_matching_texts))
+        )
+        params = {"expression": self.pattern, "text": tests}
+        encoded_params = urllib.parse.urlencode(params)
+        return f"https://regexr.com/?{encoded_params}"
 
     """
     pass through to re.Pattern

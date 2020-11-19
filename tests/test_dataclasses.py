@@ -27,6 +27,13 @@ def test_testing():
     sr.test()
 
 
+def test_regexr_link(example):
+    assert (
+        example.get_regexr_debug_link()
+        == "https://regexr.com/?expression=%5Cd%7B4%7D-%5Cd%7B2%7D-%5Cd%7B2%7D&text=These+should+all+match%0A1999-12-31%0A2020-01-01%0ANone+of+these+should+match%0A42%0Aclaritycloudworks.com"
+    )
+
+
 def test_search(example):
     assert isinstance(example.search("the date was 2020-11-19", 5), re.Match)
 

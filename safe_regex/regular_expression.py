@@ -13,7 +13,8 @@ class RegexTestCase:
     def run(self, regex):
         """ evaluate the test case against the pattern """
         actual = regex.match(self.text)
-        msg = f"{self.text} match of {regex.pattern} was not {self.matches}: {regex.get_regexr_debug_link()}"
+        link = regex.get_regexr_debug_link()
+        msg = f"{self.text} match of {regex.pattern} != {self.matches}: {link}"
         if self.matches is None:
             assert actual is None, msg
         elif len(self.matches) == 1:
@@ -59,9 +60,11 @@ class RegularExpression:
     def get_regexr_debug_link(self) -> str:
         import urllib.parse
 
-        tests = "These should all match\n{}\nNone of these should match\n{}".format(
-            "\n".join(sorted([tc.text for tc in self.test_cases if tc.matches is not None])),
-            "\n".join(sorted([tc.text for tc in self.test_cases if tc.matches is None])),
+        match = [tc.text for tc in self.test_cases if tc.matches is not None]
+        not_match = [tc.text for tc in self.test_cases if tc.matches is None]
+        tests = "These should match\n{}\nThese should not match\n{}".format(
+            "\n".join(sorted(match)),
+            "\n".join(sorted(not_match)),
         )
         params = {"expression": f"/{self.pattern}/gms", "text": tests}
         encoded_params = urllib.parse.urlencode(params)

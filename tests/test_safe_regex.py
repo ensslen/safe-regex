@@ -29,7 +29,7 @@ def test_testing():
 def test_regexr_link(example):
     assert (
         example.get_regexr_debug_link()
-        == "https://regexr.com/?expression=%2F%5Cd%7B4%7D-%5Cd%7B2%7D-%5Cd%7B2%7D%2Fgms&text=These+should+all+match%0A1999-12-31%0A2020-01-01%0ANone+of+these+should+match%0A42%0Aclaritycloudworks.com"
+        == "https://regexr.com/?expression=%2F%5Cd%7B4%7D-%5Cd%7B2%7D-%5Cd%7B2%7D%2Fgms&text=These+should+match%0A1999-12-31%0A2020-01-01%0AThese+should+not+match%0A42%0Aclaritycloudworks.com"
     )
 
 

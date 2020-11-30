@@ -1,0 +1,18 @@
+---
+pattern: ([a-z]{2,5}):\/\/([^\/]+)\/?([^?]+)?\??([^#]+)?#?(.+)?
+description: a uniform resource identifier
+test_cases:
+  - text: https://claritycloudworks.com/data-warehouse-modernisation/
+    matches: [https, claritycloudworks.com, data-warehouse-modernisation/]
+  - text: https://duckduckgo.com/a?t=ffsb&q=let+me+google+that+for+you&ia=web
+    matches:
+      - https
+      - duckduckgo.com
+      - a
+      - "t=ffsb&q=let+me+google+that+for+you&ia=web"
+  - text: https://stackoverflow.com/a/65065374/7359502
+    matches: [https, stackoverflow.com, a/65065374/7359502]
+  # These examples do not match anything
+  - text: 123
+  - text: r2d2
+  - text: google.com

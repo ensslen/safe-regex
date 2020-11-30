@@ -1,9 +1,10 @@
 ---
 pattern: '\d{4}-\d{2}-\d{2}'
 description: a date in year-month-date format
-matching_texts:
-  - "2020-01-01"
-  - "1999-12-31"
-non_matching_texts:
-  - claritycloudworks.com
-  - "42"
+test_cases:
+  - text: "2020-01-01"
+    matches: ["2020-01-01"]
+  - text: "1999-12-31"
+    matches: ["1999-12-31"]
+  - text: claritycloudworks.com
+  - text: "42"

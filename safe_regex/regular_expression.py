@@ -2,15 +2,32 @@ import pydantic
 import os
 import yaml
 import re
-from string import Template
+import typing
+
+
+@pydantic.dataclasses.dataclass(frozen=True, order=True)
+class RegexTestCase:
+    text: pydantic.constr()
+    matches: typing.Optional[typing.List[str]] = None
+
+    def run(self, regex):
+        """ evaluate the test case against the pattern """
+        actual = regex.match(self.text)
+        msg = f"{self.text} match of {regex.pattern} was not {self.matches}: {regex.get_regexr_debug_link()}"
+        if self.matches is None:
+            assert actual is None, msg
+        elif len(self.matches) == 1:
+            assert self.matches[0] == actual.group(0), msg
+        else:
+            for i in range(len(self.matches)):
+                assert self.matches[i] == actual.group(i + 1), msg
 
 
 @pydantic.dataclasses.dataclass()
 class RegularExpression:
     pattern: pydantic.constr(min_length=2)
     description: pydantic.constr(min_length=3)
-    matching_texts: pydantic.conset(item_type=str)
-    non_matching_texts: pydantic.conset(item_type=str)
+    test_cases: typing.List[RegexTestCase]
 
     @classmethod
     def from_yaml(cls, expression_name: str, folder: str = None):
@@ -36,20 +53,15 @@ class RegularExpression:
         extra = "forbid"
 
     def test(self):
-        msg = Template(f"$text $verb not match {self.pattern} {self.get_regexr_debug_link()}")
-        for text in self.matching_texts:
-            assert (
-                isinstance(self.match(text), re.Match),
-                msg.safe_substitute(text=text, verb="does"),
-            )
-        for text in self.non_matching_texts:
-            assert self.match(text) is None, msg.safe_substitute(text=text, verb="should")
+        for test_case in self.test_cases:
+            test_case.run(self)
 
     def get_regexr_debug_link(self) -> str:
         import urllib.parse
 
         tests = "These should all match\n{}\nNone of these should match\n{}".format(
-            "\n".join(sorted(self.matching_texts)), "\n".join(sorted(self.non_matching_texts))
+            "\n".join(sorted([tc.text for tc in self.test_cases if tc.matches is not None])),
+            "\n".join(sorted([tc.text for tc in self.test_cases if tc.matches is None])),
         )
         params = {"expression": f"/{self.pattern}/gms", "text": tests}
         encoded_params = urllib.parse.urlencode(params)

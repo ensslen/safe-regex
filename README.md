@@ -14,13 +14,15 @@ Separate your regex from your main code into yaml files with positive and negati
 ---
 pattern: "^[a-z]{3}$"
 description: a three letter acronym
-matching_texts:
-  - abc
-  - xyz
-non_matching_texts:
-  - 123
-  - r2d2
-  - abcd
+test_cases:
+  - text: abc
+    matches: [abc]
+  - text: xyz
+    matches: [xyz]
+  # These examples do not match anything
+  - text: 123
+  - text: r2d2
+  - text: abcd
 ```
 
 The change your python code to load the regex from the yaml file.

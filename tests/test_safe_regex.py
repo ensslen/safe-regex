@@ -16,11 +16,6 @@ def example():
     return RegularExpression.from_yaml("yyyy-mm-dd", folder="./tests")
 
 
-def test_from_yaml(example):
-    # the test fixture does this for us
-    pass
-
-
 def test_testing():
     regex_directory = "./tests"
     for filename in os.listdir(regex_directory):

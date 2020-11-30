@@ -1,10 +1,12 @@
 ---
 pattern: "^[a-z]{3}$"
 description: a tree letter acronym
-matching_texts:
-  - abc
-  - xyz
-non_matching_texts:
-  - 123
-  - r2d2
-  - abcd
+test_cases:
+  - text: abc
+    matches: [abc]
+  - text: xyz
+    matches: [xyz]
+  # These examples do not match anything
+  - text: 123
+  - text: r2d2
+  - text: abcd

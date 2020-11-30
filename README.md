@@ -13,6 +13,7 @@ Separate your regex from your main code into yaml files with positive and negati
 ```yaml
 ---
 pattern: "^[a-z]{3}$"
+description: a three letter acronym
 matching_texts:
   - abc
   - xyz

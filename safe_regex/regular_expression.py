@@ -8,6 +8,7 @@ from string import Template
 @pydantic.dataclasses.dataclass()
 class RegularExpression:
     pattern: pydantic.constr(min_length=2)
+    description: pydantic.constr(min_length=3)
     matching_texts: pydantic.conset(item_type=str)
     non_matching_texts: pydantic.conset(item_type=str)
 

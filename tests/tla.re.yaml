@@ -1,5 +1,6 @@
 ---
 pattern: "^[a-z]{3}$"
+description: a tree letter acronym
 matching_texts:
   - abc
   - xyz

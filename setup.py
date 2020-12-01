@@ -23,7 +23,8 @@ setuptools.setup(
     description="Embeds unit tests with regular expressions",
     long_description=get_description(),
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/ensslen/safe-regex",
+    keywords=["test", "regular expression"]
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
